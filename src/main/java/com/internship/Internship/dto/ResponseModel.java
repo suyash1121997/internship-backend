@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseModel {
+public class ResponseModel<T>{
 
     private int statusCode;
     private String message;
     private boolean isUserExist;
+    private T details;
 }

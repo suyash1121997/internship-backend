@@ -1,8 +1,10 @@
 package com.internship.Internship.util;
 
+import com.internship.Internship.constants.LoginMode;
 import com.internship.Internship.dto.Login;
 import com.internship.Internship.dto.RegistrationModel;
 import com.internship.Internship.dto.ResponseModel;
+import com.internship.Internship.exception.InternshipException;
 import com.internship.Internship.repository.ISignUpRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,5 +39,16 @@ public class LoginValidator {
             return ResponseModel.builder().message(SIGNUP_ERR_MSG).statusCode(HttpStatus.NOT_FOUND.value())
                     .isUserExist(false).build();
         }
+    }
+    public static void validateUserWithProfile(ISignUpRepository signUpRepository, String email, LoginMode loginMode) throws InternshipException {
+        Optional<RegistrationModel> registrationModel = signUpRepository.findById(email);
+        if(registrationModel.isPresent()){
+            if(!registrationModel.get().getLoginMode().equals(loginMode)) {
+                throw new InternshipException(400, "User is not valid to perform this operation");
+            }
+            return;
+        }
+        throw new InternshipException(404, "User does not exists");
+
     }
 }

@@ -14,12 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InternshipModel {
     @Id
-    private String id;
+    private String internshipId;
     private String title;
     private String description;
     private String location;
     private String duration;
     private int price;
+    private int seats;
     private String requirements;
     private String mentorEmail;
 }

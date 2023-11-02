@@ -26,7 +26,16 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 			<version>3.1.2</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+			<groupId>com.vladmihalcea</groupId>
+			<artifactId>hibernate-types-60</artifactId>
+			<version>2.21.1</version>
+		</dependency>
+			<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>javax.mail-api</artifactId>
