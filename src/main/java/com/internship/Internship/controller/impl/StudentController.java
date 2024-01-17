@@ -18,7 +18,7 @@ public class StudentController implements IStudentController {
     @Autowired
     IStudentService studentService;
     @Override
-    public ResponseEntity<ResponseModel> addInternshipInAccount(String email, String id) throws InternshipException {
+    public ResponseEntity<ResponseModel> addInternshipInAccount(String email, String[] id) throws InternshipException {
         return new ResponseEntity<>(studentService.addInternshipInAccount(email, id), HttpStatus.OK);
     }
 

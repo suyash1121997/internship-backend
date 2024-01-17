@@ -10,6 +10,10 @@ import com.internship.Internship.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,19 +23,23 @@ public class StudentServiceImpl implements IStudentService {
 @Autowired
     IAddInternshipRepository internshipRepository;
     @Override
-    public ResponseModel addInternshipInAccount(String email, String id) throws InternshipException {
-        Optional<InternshipModel> internshipModel = internshipRepository.findById(id);
-        if(internshipModel.isPresent()) {
-            int seats = internshipModel.get().getSeats();
-            internshipModel.get().setSeats(seats-1);
-            internshipRepository.save(internshipModel.get());
+    public ResponseModel addInternshipInAccount(String email, String[] id) throws InternshipException {
+        List<InternshipModel> internshipModel = internshipRepository.findAllById(List.of(id));
+        if(!internshipModel.isEmpty()) {
+            internshipModel.forEach(e ->  e.setSeats(e.getSeats() - 1));
+            internshipRepository.saveAll(internshipModel);
         }
         else {
             throw new InternshipException(404, "Internship does not exist");
         }
-        StudentInternship studentInternship = StudentInternship.builder().internshipId(id)
-                .internshipList(internshipModel.get()).studentEmail(email).build();
-        studentRepository.save(studentInternship);
+        List<StudentInternship> studentInternships = new ArrayList<>();
+        internshipModel.forEach(e -> studentInternships.add(StudentInternship.builder()
+                        .internshipId(e.getInternshipId())
+                        .date(Date.from(Instant.now()))
+                        .internshipList(e)
+                        .studentEmail(email)
+                .build()));
+        studentRepository.saveAll(studentInternships);
         return ResponseModel.builder().statusCode(200).message("You have successfully applied for internship")
                 .build();
     }

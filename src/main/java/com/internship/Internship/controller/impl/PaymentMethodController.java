@@ -15,16 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 @RestController
-@RequestMapping("/internship")
 @CrossOrigin(origins = "http://localhost:4200/")
 @Slf4j
 public class PaymentMethodController implements IPaymentController {
     @Autowired
     IPaymentService paymentService;
     @Override
-    public ResponseEntity<ResponseModel> validatePayment(PaymentModelDto paymentModelDto) throws InternshipException, ParseException {
+    public ResponseModel validatePayment(PaymentModelDto paymentModelDto) throws InternshipException, ParseException {
         log.info("cardNumber" + paymentModelDto.getCardNumber());
-        log.info("date" + paymentModelDto.getDate());
+        log.info("date" + paymentModelDto.getExpiryDate());
         log.info("cvv" + paymentModelDto.getCvv());
         log.info("pay" + paymentModelDto.getAmount());
         log.info("name" +paymentModelDto.getName());
@@ -32,6 +31,6 @@ public class PaymentMethodController implements IPaymentController {
         log.info("email" +paymentModelDto.getEmail());
 
 
-        return new ResponseEntity<>(paymentService.validatePayment(paymentModelDto), HttpStatus.OK);
+        return paymentService.validatePayment(paymentModelDto);
     }
 }

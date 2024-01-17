@@ -4,17 +4,19 @@ import com.internship.Internship.dto.PaymentModelDto;
 import com.internship.Internship.dto.ResponseModel;
 import com.internship.Internship.exception.InternshipException;
 import com.internship.Internship.model.BankPaymentModel;
-import com.internship.Internship.model.InternshipModel;
 import com.internship.Internship.model.PaymentMethod;
 import com.internship.Internship.repository.IBankPaymentValidatorRepository;
 import com.internship.Internship.repository.IPaymentRepository;
 import com.internship.Internship.service.IPaymentService;
 import com.internship.Internship.service.IStudentService;
+import jakarta.validation.constraints.Future;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
@@ -31,10 +33,11 @@ public class PaymentServiceImpl implements IPaymentService {
         Optional<PaymentMethod> paymentMethod = paymentRepository.findById(paymentModelDto.getCardNumber());
         if (paymentMethod.isPresent()) {
             PaymentMethod paymentMethod1 = paymentMethod.get();
-            boolean isDateValid = isDateValid(paymentMethod1.getDate(), paymentModelDto.getDate());
+            boolean isDateValid = isDateValid(paymentMethod1.getDate(), paymentModelDto.getExpiryDate());
             if (isDateValid && paymentMethod1.getCvv() == paymentModelDto.getCvv()) {
                 validateAndDeductPayment(paymentModelDto);
                 ResponseModel responseModel = studentService.addInternshipInAccount(paymentModelDto.getEmail(), paymentModelDto.getInternshipId());
+
                 return ResponseModel.builder().message("Payment processed successfully" + "." + responseModel.getMessage())
                         .statusCode(200).build();
             }
@@ -58,9 +61,7 @@ public class PaymentServiceImpl implements IPaymentService {
         }
     }
 
-    private boolean isDateValid(Date actualDate, Date givenDate) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Date date1 = dateFormat.parse(String.valueOf(givenDate));
-        return date1.compareTo(actualDate) == 0;
+    private boolean isDateValid(String actualDate,  String givenDate) throws ParseException {
+        return actualDate.equals(givenDate);
     }
 }

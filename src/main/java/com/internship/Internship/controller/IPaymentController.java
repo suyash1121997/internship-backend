@@ -12,6 +12,6 @@ import java.text.ParseException;
 @CrossOrigin(origins = "http://localhost:4200/")
 public interface IPaymentController {
     @PostMapping("/makePayment")
-    ResponseEntity<ResponseModel> validatePayment(@RequestBody  PaymentModelDto paymentModelDto) throws InternshipException, ParseException;
+    ResponseModel validatePayment(@RequestBody  PaymentModelDto paymentModelDto) throws InternshipException, ParseException;
 
 }
