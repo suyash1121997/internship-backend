@@ -16,5 +16,5 @@ public interface ICartController {
     @GetMapping("/getAllItems")
     ResponseEntity<List<Internship>> getAllItemsFromCart(@RequestParam String userId);
     @DeleteMapping("/deleteFromCart")
-    ResponseEntity<String> deleteFromCart(@RequestParam String userId, @RequestBody Internship internship) throws InternshipException;
+    ResponseEntity<String> deleteFromCart(@RequestParam String userId,@RequestParam String internshipId) throws InternshipException;
 }

@@ -6,6 +6,7 @@ import com.internship.Internship.model.CartModel;
 import com.internship.Internship.repository.ICartRepository;
 import com.internship.Internship.service.ICartService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.internal.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CartServiceImpl implements ICartService {
     @Autowired
     ICartRepository cartRepository;
@@ -28,15 +30,12 @@ public class CartServiceImpl implements ICartService {
     }
 
     @Override
-    public String removeFromCart(String userId, Internship internship) throws InternshipException {
+    public String removeFromCart(String userId, String internshipId) throws InternshipException {
        List<CartModel> cartModel =  cartRepository.findByUserId(userId);
-       CartModel cartModel1 = cartModel.stream().filter(Objects::nonNull)
-               .filter(e -> e.getInternship().getId().equals(internship.getId())).findAny().orElse(null);
-       if(cartModel1!=null) {
-           cartRepository.delete(cartModel1);
-           return "Item deleted successfully from cart";
-       }
-       throw new InternshipException(404, "item does not exists in cart");
+       cartModel = cartModel.stream().filter(e -> e.getInternship().getId().equals(internshipId)).toList();
+       log.info("Cart model to be deleted is " + cartModel.stream().toString());
+        cartRepository.deleteAll(cartModel);
+        return "Item deleted successfully from cart";
     }
 
     @Override

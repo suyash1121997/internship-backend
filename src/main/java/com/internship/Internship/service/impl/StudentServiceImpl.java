@@ -9,6 +9,7 @@ import com.internship.Internship.repository.IStudentRepository;
 import com.internship.Internship.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,14 +18,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class StudentServiceImpl implements IStudentService {
     @Autowired
     IStudentRepository studentRepository;
 @Autowired
     IAddInternshipRepository internshipRepository;
     @Override
-    public ResponseModel addInternshipInAccount(String email, String[] id) throws InternshipException {
-        List<InternshipModel> internshipModel = internshipRepository.findAllById(List.of(id));
+    public ResponseModel addInternshipInAccount(String email, List<String> id) throws InternshipException {
+        List<InternshipModel> internshipModel = internshipRepository.findAllById(id);
         if(!internshipModel.isEmpty()) {
             internshipModel.forEach(e ->  e.setSeats(e.getSeats() - 1));
             internshipRepository.saveAll(internshipModel);

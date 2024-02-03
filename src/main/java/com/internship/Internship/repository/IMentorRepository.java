@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Repository
-public interface IMentorRepository extends JpaRepository<MentorStudentModel, String> {
+public interface IMentorRepository extends JpaRepository<MentorStudentModel, Integer> {
     List<MentorStudentModel> findAllByMentorEmail(String mentorEmail);
 }

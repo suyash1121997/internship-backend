@@ -1,5 +1,5 @@
 package com.internship.Internship.dto;
-
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Future;
 import lombok.*;
@@ -22,6 +22,6 @@ public class PaymentModelDto{
     private String name;
     private Integer amount;
 
-    private String[] internshipId;
+    private List<String> internshipId;
     private String email;
 }

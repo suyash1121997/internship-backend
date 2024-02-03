@@ -13,6 +13,5 @@ import java.util.List;
 @Builder
 @Data
 public class MentorStudentDto {
-    private String mentorEmail;
-    private List<Internship> internshipList;
+    private List<InternshipDetails> internshipDetails;
 }
