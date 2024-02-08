@@ -43,7 +43,7 @@ public class AddInternshipServiceImpl implements IAddInternshipService {
     }
 
     @Override
-    public List<Internship> getAllInternship() {
+    public List<Internship> getAllInternship(String email) {
         List<InternshipModel> internshipModelList = addInternshipRepository.findAllBySeatsNot(0);
 
         return internshipModelList.stream()

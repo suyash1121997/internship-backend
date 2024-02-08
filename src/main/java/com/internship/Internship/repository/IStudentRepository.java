@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface IStudentRepository extends JpaRepository<StudentInternship, Integer> {
     StudentInternship findByStudentEmailAndInternshipId(String email, String id);
 
-    List<StudentInternship> findByInternshipId(String internshipId);
+    List<StudentInternship> findByInternshipIdAndStatusNot(String internshipId, String status);
+
+    List<StudentInternship> findAllByStudentEmail(String studentEmail);
 }

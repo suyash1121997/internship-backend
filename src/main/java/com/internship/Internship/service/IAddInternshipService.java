@@ -11,5 +11,5 @@ public interface IAddInternshipService {
 
     ResponseModel<Internship> addInternship(Internship internship) throws InternshipException;
 
-    List<Internship> getAllInternship();
+    List<Internship> getAllInternship(String email);
 }

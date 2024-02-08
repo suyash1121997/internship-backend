@@ -1,5 +1,6 @@
 package com.internship.Internship.service.impl;
 
+import com.internship.Internship.constants.Status;
 import com.internship.Internship.dto.InternshipDetails;
 import com.internship.Internship.dto.MentorStudentDto;
 import com.internship.Internship.model.InternshipModel;
@@ -46,7 +47,7 @@ public class MentorStudentServiceImpl implements IMentorStudentService {
     }
 
     private List<String> getStudentEmailsBasedOnInternshipId(String internshipId) {
-         return studentRepository.findByInternshipId(internshipId).stream().map(StudentInternship::getStudentEmail)
+         return studentRepository.findByInternshipIdAndStatusNot(internshipId, Status.ACCEPTED.name()).stream().map(StudentInternship::getStudentEmail)
                  .toList();
     }
 }

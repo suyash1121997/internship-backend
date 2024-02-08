@@ -1,7 +1,9 @@
 package com.internship.Internship.controller.impl;
 
+import com.internship.Internship.constants.Status;
 import com.internship.Internship.controller.IStudentController;
 import com.internship.Internship.dto.ResponseModel;
+import com.internship.Internship.dto.UpdateInternship;
 import com.internship.Internship.exception.InternshipException;
 import com.internship.Internship.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,16 @@ public class StudentController implements IStudentController {
     IStudentService studentService;
     @Override
     public ResponseEntity<ResponseModel> addInternshipInAccount(String email, List<String> id) throws InternshipException {
-        return new ResponseEntity<>(studentService.addInternshipInAccount(email, id), HttpStatus.OK);
+        return new ResponseEntity<>(studentService.addInternshipInAccount(email, id, Status.PENDING_FOR_APPROVAL), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ResponseModel> cancelInternship(String email, String id) throws InternshipException {
         return new ResponseEntity<>(studentService.cancelInternship(email, id), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseModel> updateStatus(UpdateInternship updateInternship) {
+        return new ResponseEntity<>(studentService.updateStatus(updateInternship), HttpStatus.OK);
     }
 }

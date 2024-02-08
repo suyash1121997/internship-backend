@@ -1,5 +1,6 @@
 package com.internship.Internship.service.impl;
 
+import com.internship.Internship.constants.Status;
 import com.internship.Internship.dto.PaymentModelDto;
 import com.internship.Internship.dto.ResponseModel;
 import com.internship.Internship.exception.InternshipException;
@@ -42,7 +43,7 @@ public class PaymentServiceImpl implements IPaymentService {
             boolean isDateValid = isDateValid(paymentMethod1.getDate(), paymentModelDto.getExpiryDate());
             if (isDateValid && paymentMethod1.getCvv() == paymentModelDto.getCvv()) {
                 validateAndDeductPayment(paymentModelDto);
-                ResponseModel responseModel = studentService.addInternshipInAccount(paymentModelDto.getEmail(), paymentModelDto.getInternshipId());
+                ResponseModel responseModel = studentService.addInternshipInAccount(paymentModelDto.getEmail(), paymentModelDto.getInternshipId(), Status.PENDING_FOR_APPROVAL);
                 updateMentorDatabaseWithInternship(paymentModelDto.getInternshipId(), paymentModelDto.getEmail());
                 UpdateCartIfrequestIsComingFromCart(paymentModelDto.getEmail(), paymentModelDto.getInternshipId());
                 return ResponseModel.builder().message("Payment processed successfully" + "." + responseModel.getMessage())

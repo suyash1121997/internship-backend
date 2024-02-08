@@ -1,5 +1,6 @@
 package com.internship.Internship.controller;
 
+import com.internship.Internship.constants.Status;
 import com.internship.Internship.dto.Internship;
 import com.internship.Internship.dto.ResponseModel;
 import com.internship.Internship.exception.InternshipException;
@@ -17,5 +18,5 @@ public interface IAddInternshipController{
     ResponseEntity<ResponseModel<Internship>> addInternship(@RequestBody Internship internship) throws InternshipException;
 
     @GetMapping("/getAllInternships")
-    ResponseEntity<ResponseModel<List<Internship>>> getAllInternship();
+    ResponseEntity<ResponseModel<List<Internship>>> getAllInternship(@RequestParam(name = "studentEmail") String email);
 }

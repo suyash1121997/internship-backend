@@ -31,4 +31,5 @@ public class StudentInternship {
     @DateTimeFormat(pattern = "MM/dd/yyyy")
     private Date date;
     private String internshipId;
+    private String status;
 }

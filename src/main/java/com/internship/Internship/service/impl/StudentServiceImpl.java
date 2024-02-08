@@ -1,6 +1,8 @@
 package com.internship.Internship.service.impl;
 
+import com.internship.Internship.constants.Status;
 import com.internship.Internship.dto.ResponseModel;
+import com.internship.Internship.dto.UpdateInternship;
 import com.internship.Internship.model.StudentInternship;
 import com.internship.Internship.exception.InternshipException;
 import com.internship.Internship.model.InternshipModel;
@@ -25,7 +27,7 @@ public class StudentServiceImpl implements IStudentService {
 @Autowired
     IAddInternshipRepository internshipRepository;
     @Override
-    public ResponseModel addInternshipInAccount(String email, List<String> id) throws InternshipException {
+    public ResponseModel addInternshipInAccount(String email, List<String> id, Status status) throws InternshipException {
         List<InternshipModel> internshipModel = internshipRepository.findAllById(id);
         if(!internshipModel.isEmpty()) {
             internshipModel.forEach(e ->  e.setSeats(e.getSeats() - 1));
@@ -40,6 +42,7 @@ public class StudentServiceImpl implements IStudentService {
                         .date(Date.from(Instant.now()))
                         .internshipList(e)
                         .studentEmail(email)
+                        .status(String.valueOf(status))
                 .build()));
         studentRepository.saveAll(studentInternships);
         return ResponseModel.builder().statusCode(200).message("You have successfully applied for internship")
@@ -63,5 +66,13 @@ public class StudentServiceImpl implements IStudentService {
                     .build();
         }
         throw new InternshipException(404, "Student does not exist");
+    }
+
+    @Override
+    public ResponseModel updateStatus(UpdateInternship updateInternship) {
+        var byStudentEmailAndInternshipId = studentRepository.findByStudentEmailAndInternshipId(updateInternship.getStudentEmail(), updateInternship.getInternshipId());
+        byStudentEmailAndInternshipId.setStatus(Status.valueOf(updateInternship.getStatus().toUpperCase()).name());
+        studentRepository.save(byStudentEmailAndInternshipId);
+        return ResponseModel.builder().message("Status updated successfully").build();
     }
 }
