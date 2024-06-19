@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/internship")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public interface IStudentController {
     @PostMapping("/addToStudent")
     ResponseEntity<ResponseModel> addInternshipInAccount(@RequestParam String email, @RequestParam List<String> id) throws InternshipException;

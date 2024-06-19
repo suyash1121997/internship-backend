@@ -1,7 +1,6 @@
 package com.internship.Internship.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.internship.Internship.model.compositekeys.StudentInternShipCompositeKey;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +11,7 @@ import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -21,15 +21,11 @@ import java.util.Date;
 @AllArgsConstructor
 
 public class StudentInternship {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int sNo;
-    private String studentEmail;
+    @EmbeddedId
+    private StudentInternShipCompositeKey studentInternShipCompositeKey;
     @Type(JsonBinaryType.class)
     @Column(name = "internships", columnDefinition = "jsonb")
     private InternshipModel internshipList;
     @DateTimeFormat(pattern = "MM/dd/yyyy")
     private Date date;
-    private String internshipId;
-    private String status;
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/internship")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public interface ISignupController {
     @PostMapping("/signup")
      ResponseModel signup(@RequestBody @Valid  SignupDto signupDto);

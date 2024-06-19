@@ -36,14 +36,14 @@ public class PaymentServiceImpl implements IPaymentService {
     @Autowired
     IStudentService studentService;
     @Override
-    public ResponseModel validatePayment(PaymentModelDto paymentModelDto) throws ParseException, InternshipException {
+    public ResponseModel<?> validatePayment(PaymentModelDto paymentModelDto) throws ParseException, InternshipException {
         Optional<PaymentMethod> paymentMethod = paymentRepository.findById(paymentModelDto.getCardNumber());
         if (paymentMethod.isPresent()) {
             PaymentMethod paymentMethod1 = paymentMethod.get();
             boolean isDateValid = isDateValid(paymentMethod1.getDate(), paymentModelDto.getExpiryDate());
             if (isDateValid && paymentMethod1.getCvv() == paymentModelDto.getCvv()) {
                 validateAndDeductPayment(paymentModelDto);
-                ResponseModel responseModel = studentService.addInternshipInAccount(paymentModelDto.getEmail(), paymentModelDto.getInternshipId(), Status.PENDING_FOR_APPROVAL);
+                ResponseModel<?> responseModel = studentService.addInternshipInAccount(paymentModelDto.getEmail(), paymentModelDto.getInternshipId(), Status.PENDING_FOR_APPROVAL);
                 updateMentorDatabaseWithInternship(paymentModelDto.getInternshipId(), paymentModelDto.getEmail());
                 UpdateCartIfrequestIsComingFromCart(paymentModelDto.getEmail(), paymentModelDto.getInternshipId());
                 return ResponseModel.builder().message("Payment processed successfully" + "." + responseModel.getMessage())

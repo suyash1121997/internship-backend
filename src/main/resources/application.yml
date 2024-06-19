@@ -1,0 +1,26 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/internship
+    username: postgres
+    password: postgres
+    initialization-mode: always
+    hikari:
+      initialization-fail-timeout: 0
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update  # You can set ddl-auto to update if you want to update the schema
+
+  flyway:
+    locations: classpath:db/migration/
+    baseline-on-migrate: true
+    # You can aƒƒdd other packages or classes for debug logging as needed
+logging:
+  level:
+    org.flywaydb: DEBUG

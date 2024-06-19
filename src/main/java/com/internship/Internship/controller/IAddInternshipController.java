@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/internship")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public interface IAddInternshipController{
     @PostMapping("/addInternship")
     ResponseEntity<ResponseModel<Internship>> addInternship(@RequestBody Internship internship) throws InternshipException;

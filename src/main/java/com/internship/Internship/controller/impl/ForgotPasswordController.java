@@ -13,7 +13,7 @@ import java.util.Random;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200/")
 public class ForgotPasswordController implements IForgotPasswordController {
-    @Autowired
+//    @Autowired
     EmailService emailService;
     @Override
     public ResponseEntity<String> resetPassword(String email) throws MessagingException {

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/internship")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public interface IForgotPasswordController {
     @GetMapping("/reset")
     ResponseEntity<String> resetPassword(@RequestParam String email) throws MessagingException;

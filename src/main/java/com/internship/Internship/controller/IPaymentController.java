@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 @RestController
 @RequestMapping("/internship")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "*")
 public interface IPaymentController {
     @PostMapping("/makePayment")
     ResponseModel validatePayment(@RequestBody  PaymentModelDto paymentModelDto) throws InternshipException, ParseException;

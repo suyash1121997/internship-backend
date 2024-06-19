@@ -1,0 +1,22 @@
+package com.internship.Internship.repository;
+
+import com.internship.Internship.constants.Status;
+import com.internship.Internship.model.StudentInternshipHistory;
+import com.internship.Internship.model.compositekeys.StudentInternShipCompositeKey;
+import com.internship.Internship.model.compositekeys.StudentInternshipHistoryCompositeKey;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface IStudentInternshipHistory  extends JpaRepository<StudentInternshipHistory, StudentInternshipHistoryCompositeKey>  {
+    Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyAndStudentInternshipHistoryCompositeKeyStatusNotInOrderByCreatedDateDesc(StudentInternShipCompositeKey build, List<Status> list);
+
+    Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKey(StudentInternshipHistoryCompositeKey studentInternshipHistory);
+
+    Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyInternshipIdAndStudentInternshipHistoryCompositeKeyStatus(String internshipId, String status);
+
+    Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyStudentEmailAndStudentInternshipHistoryCompositeKeyInternshipId(String studentEmail, String internshipId);
+
+//    Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyInternshipIdAndStudentInternshipHistoryCompositeKeyStatus(StudentInternshipHistoryCompositeKey studentInternshipHistoryCompositeKey);
+}

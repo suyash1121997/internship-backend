@@ -6,7 +6,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
-public class InternshipException extends Exception {
+public class InternshipException extends RuntimeException {
     public InternshipException(String message) {
         super(message);
 
