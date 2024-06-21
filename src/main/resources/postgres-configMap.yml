@@ -1,7 +1,7 @@
-apiVersion : v1
-kind : ConfigMap
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name : db-config
+  name: postgres-configmap
 data:
-  host : mysql
-  dbName: Internship
+  host: "postgres"
+  name: "internship"

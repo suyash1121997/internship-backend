@@ -3,9 +3,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/internship
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql:<postgres_host>:5432/${DB_NAME}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     initialization-mode: always
     hikari:
       initialization-fail-timeout: 0

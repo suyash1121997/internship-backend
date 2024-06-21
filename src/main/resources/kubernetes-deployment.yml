@@ -1,43 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: internship-backend
+  name: internship-backend-new
 spec:
   selector:
     matchLabels:
-      app: internship-backend
+      app: internship-backend-new
   replicas: 3
   template:
     metadata:
       labels:
-        app: internship-backend
+        app: internship-backend-new
     spec:
       containers:
-        - name: internship-backend
-          image: internship-backend:latest
+        - name: internship-backend-new
+          image: suyashsamant/internship-backend-new:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
-          env:   # Setting Environmental Variables
+          env:
             - name: DB_HOST
-              value: "postgres"   # Hardcoded database host address
+              value: "postgres"   # Corrected database host address
             - name: DB_NAME
-              value: "Internship"   # Hardcoded database name
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: name
             - name: DB_USERNAME
-              value: "postgres"   # Hardcoded database username
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
             - name: DB_PASSWORD
-              value: "postgres"   # Hardcoded database password
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: internship-backend
-spec:
-  selector:
-    app: internship-backend
-  ports:
-    - protocol: "TCP"
-      port: 8080
-      targetPort: 8080
-  type: NodePort
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
