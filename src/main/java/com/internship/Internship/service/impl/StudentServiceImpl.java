@@ -2,6 +2,7 @@ package com.internship.Internship.service.impl;
 
 import com.internship.Internship.constants.Status;
 import com.internship.Internship.dto.ResponseModel;
+import com.internship.Internship.dto.StudentInternshipHistoryDto;
 import com.internship.Internship.dto.UpdateInternship;
 import com.internship.Internship.model.StudentInternship;
 import com.internship.Internship.exception.InternshipException;
@@ -19,10 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -58,7 +57,7 @@ public class StudentServiceImpl implements IStudentService {
            studentInternshipHistoryList.add(StudentInternshipHistory.builder()
                            .studentInternshipHistoryCompositeKey(
                                    StudentInternshipHistoryCompositeKey
-                                           .builder().status(Status.PENDING_FOR_APPROVAL.name())
+                                           .builder().status(Status.PENDING_FOR_APPROVAL)
                                            .internshipId(e)
                                            .studentEmail(email).build()
                            )
@@ -92,7 +91,7 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public ResponseModel<?> updateStatus(UpdateInternship updateInternship) {
-        String status = Status.getValue(updateInternship.getStatus());
+        Status status = Status.valueOf(updateInternship.getStatus());
         var optionalStudentHistory = studentInternshipHistory.findByStudentInternshipHistoryCompositeKeyStudentEmailAndStudentInternshipHistoryCompositeKeyInternshipId(
                updateInternship.getStudentEmail(), updateInternship.getInternshipId());
               optionalStudentHistory.ifPresent((e)-> {
@@ -101,5 +100,37 @@ public class StudentServiceImpl implements IStudentService {
                   studentInternshipHistory.save(e.clone());
               });
         return ResponseModel.builder().message("Status updated successfully").build();
+    }
+
+    @Override
+    public ResponseModel<List<StudentInternshipHistoryDto>> getInternshipHistory(String email) {
+        List<StudentInternshipHistory> studentInternshipHistoryList = studentInternshipHistory
+                .findByStudentInternshipHistoryCompositeKeyStudentEmailOrderByCreatedDateDesc(email)
+                .stream()
+                .collect(Collectors.toMap(
+                        history -> new AbstractMap.SimpleEntry<>(history.getStudentInternshipHistoryCompositeKey().getStudentEmail(),
+                                history.getStudentInternshipHistoryCompositeKey().getInternshipId()),
+                        history -> history,
+                        (existing, replacement) -> existing // Merge function to keep the first occurrence
+                ))
+                .values().stream()
+                .toList();
+
+        if(studentInternshipHistoryList.isEmpty()) {
+           return ResponseModel.<List<StudentInternshipHistoryDto>>builder()
+                    .message("Students has not yet applied for any internships")
+                    .details(List.of())
+                    .build();
+        }
+        List<StudentInternshipHistoryDto> studentInternshipHistoryDto =
+                studentInternshipHistoryList.stream().map(e-> StudentInternshipHistoryDto.builder()
+                         .studentEmail(e.getStudentInternshipHistoryCompositeKey().getStudentEmail())
+                         .status(e.getStudentInternshipHistoryCompositeKey().getStatus().toString())
+                         .internshipId(e.getStudentInternshipHistoryCompositeKey().getInternshipId()).build()).toList();
+        return  ResponseModel.<List<StudentInternshipHistoryDto>>builder()
+                .isUserExist(true)
+                .message("Students internship history fetched successfully")
+                .details(studentInternshipHistoryDto)
+                .build();
     }
 }

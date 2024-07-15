@@ -10,13 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IStudentInternshipHistory  extends JpaRepository<StudentInternshipHistory, StudentInternshipHistoryCompositeKey>  {
-    Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyAndStudentInternshipHistoryCompositeKeyStatusNotInOrderByCreatedDateDesc(StudentInternShipCompositeKey build, List<Status> list);
+    Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyAndStudentInternshipHistoryCompositeKeyStatusNotInOrderByCreatedDateDesc(StudentInternshipHistoryCompositeKey build, List<Status> list);
 
     Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKey(StudentInternshipHistoryCompositeKey studentInternshipHistory);
 
     Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyInternshipIdAndStudentInternshipHistoryCompositeKeyStatus(String internshipId, String status);
 
     Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyStudentEmailAndStudentInternshipHistoryCompositeKeyInternshipId(String studentEmail, String internshipId);
+
+    List<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyStudentEmailOrderByCreatedDateDesc(String email);
 
 //    Optional<StudentInternshipHistory> findByStudentInternshipHistoryCompositeKeyInternshipIdAndStudentInternshipHistoryCompositeKeyStatus(StudentInternshipHistoryCompositeKey studentInternshipHistoryCompositeKey);
 }

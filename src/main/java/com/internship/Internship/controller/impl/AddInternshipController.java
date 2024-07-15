@@ -7,6 +7,7 @@ import com.internship.Internship.dto.ResponseModel;
 import com.internship.Internship.exception.InternshipException;
 import com.internship.Internship.model.StudentInternship;
 import com.internship.Internship.model.compositekeys.StudentInternShipCompositeKey;
+import com.internship.Internship.model.compositekeys.StudentInternshipHistoryCompositeKey;
 import com.internship.Internship.repository.IStudentInternshipHistory;
 import com.internship.Internship.repository.IStudentRepository;
 import com.internship.Internship.service.IAddInternshipService;
@@ -40,7 +41,7 @@ public class AddInternshipController implements IAddInternshipController {
                 List<String> ids = all.stream()
                         .filter(e->
                             studentInternshipHistory.findByStudentInternshipHistoryCompositeKeyAndStudentInternshipHistoryCompositeKeyStatusNotInOrderByCreatedDateDesc(
-                                    StudentInternShipCompositeKey.builder().studentEmail(studentEmail).internshipId(e.getInternshipList().getInternshipId())
+                                    StudentInternshipHistoryCompositeKey.builder().studentEmail(studentEmail).internshipId(e.getInternshipList().getInternshipId())
                                             .build(), Arrays.asList(Status.PENDING_FOR_APPROVAL, Status.ACCEPTED, Status.REJECTED)).isEmpty()).
                 map(StudentInternship::getStudentInternShipCompositeKey).map(StudentInternShipCompositeKey::getInternshipId).toList();
         getAllInternship = getAllInternship.stream().filter(e -> !ids.contains(e.getId())).toList();

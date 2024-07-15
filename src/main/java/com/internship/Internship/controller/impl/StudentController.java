@@ -3,8 +3,10 @@ package com.internship.Internship.controller.impl;
 import com.internship.Internship.constants.Status;
 import com.internship.Internship.controller.IStudentController;
 import com.internship.Internship.dto.ResponseModel;
+import com.internship.Internship.dto.StudentInternshipHistoryDto;
 import com.internship.Internship.dto.UpdateInternship;
 import com.internship.Internship.exception.InternshipException;
+import com.internship.Internship.model.StudentInternshipHistory;
 import com.internship.Internship.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,5 +35,9 @@ public class StudentController implements IStudentController {
     @Override
     public ResponseEntity<ResponseModel> updateStatus(UpdateInternship updateInternship) {
         return new ResponseEntity<>(studentService.updateStatus(updateInternship), HttpStatus.OK);
+    }
+    @Override
+    public ResponseEntity<ResponseModel<List<StudentInternshipHistoryDto>>> getInternshipHistory(String studentEmail) {
+        return new ResponseEntity<>(studentService.getInternshipHistory(studentEmail), HttpStatus.OK);
     }
 }

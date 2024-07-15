@@ -1,8 +1,7 @@
 package com.internship.Internship.model.compositekeys;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
+import com.internship.Internship.constants.Status;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,8 +10,9 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentInternshipHistoryCompositeKey implements Serializable, Cloneable{
+public class StudentInternshipHistoryCompositeKey implements Serializable{
     private String studentEmail;
     private String internshipId;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }
